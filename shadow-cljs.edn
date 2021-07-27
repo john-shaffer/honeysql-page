@@ -1,0 +1,10 @@
+;; shadow-cljs configuration
+{:source-paths ["src"]
+ :dependencies [[com.github.seancorfield/honeysql "2.0.0-rc5"]
+                [reagent "1.1.0"]]
+ :dev-http {8080 "public"}
+ :builds
+ {:main
+  {:target :browser
+   :modules {:main {:init-fn com.john-shaffer.honeysql-page/init}}
+   :release {:compiler-options {:optimizations :advanced}}}}}
