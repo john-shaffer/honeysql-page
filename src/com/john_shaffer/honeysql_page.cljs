@@ -1,8 +1,10 @@
 (ns com.john-shaffer.honeysql-page
   (:require [clojure.edn :as edn]
+            [clojure.string :as str]
+            [com.john-shaffer.honeysql-page.editor :as editor]
             [honey.sql :as sql]
             [reagent.core :as r]
-            [reagent.dom :as rd]))
+            [reagent.dom :as rdom]))
 
 (def default-options
   "{:params {:param1 \"gabba\", :param2 2}, :pretty true}")
@@ -42,14 +44,12 @@
         [:div
          [:span "HoneySQL Version: 2.0.0-rc5"]
          [:div {:style {:display "flex" :margin-top "10px"}}
-          [:textarea {:cols 80 :rows 30 :value query-map
-                      :on-change #(swap! state assoc :query-map
-                                    (.-value (.-target %)))}]
-          [:textarea {:cols 80 :rows 5 :value options
-                      :on-change #(swap! state assoc :options
-                                    (.-value (.-target %)))}]]
+          [editor/editor query-map
+           {:on-change #(->> % .-state .-doc .toString (swap! state assoc :query-map))}]
+          [editor/editor options
+           {:on-change #(->> % .-state .-doc .toString (swap! state assoc :options))}]]
          [results {:options options :query-map query-map}]]))))
 
 (defn ^:export ^:dev/after-load init []
-  (rd/render [App]
+  (rdom/render [App]
     (js/document.getElementById "reagent-mount")))
