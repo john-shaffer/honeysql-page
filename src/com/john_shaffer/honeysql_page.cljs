@@ -14,7 +14,8 @@
   "{:select-distinct [:f.* :b.baz :c.quux [:b.bla \"bla-bla\"]
                   [[:now]] [[:raw \"@x := 10\"]]]
  :from [[:foo :f] [:baz :b]]
- :join [:draq [:= :f.b :draq.x]]
+ :join [:draq [:= :f.b :draq.x]
+        :eldr [:= :f.e :eldr.t]]
  :left-join [[:clod :c] [:= :f.a :c.d]]
  :right-join [:bock [:= :bock.z :c.e]]
  :where [:or
