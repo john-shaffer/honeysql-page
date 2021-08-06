@@ -3,6 +3,7 @@
             [clojure.string :as str]
             [com.john-shaffer.honeysql-page.editor :as editor]
             [honey.sql :as sql]
+            ["react-highlight" :default Highlight]
             [reagent.core :as r]
             [reagent.dom :as rdom]))
 
@@ -28,13 +29,20 @@
  :offset 10}")
 
 (defn results [{:keys [options query-map]}]
-  (let [[x & more] (try
-                     (sql/format (edn/read-string query-map) (edn/read-string options))
-                     (catch js/Error e
-                       [e]))]
-    [:div {:style {:margin-left "6px"}}
-     [:pre x]
-     [:pre (when more (pr-str (vec more)))]]))
+  (let [{[x & more] :result e :error}
+        #__ (try
+              {:result
+               (sql/format (edn/read-string query-map)
+                 (edn/read-string options))}
+              (catch js/Error e
+                {:error e}))]
+    [:div {:style {:font-size "16px" :margin-left "24px"}}
+     (if e
+       (r/create-element Highlight #js{:className "language-clojure"} (pr-str e))
+       (r/create-element Highlight #js{:className "language-sql"} x))
+     (when more
+       (r/create-element Highlight #js{:className "language-clojure"}
+         (pr-str (vec more))))]))
 
 (defn App []
   (let [state (r/atom {:options default-options
