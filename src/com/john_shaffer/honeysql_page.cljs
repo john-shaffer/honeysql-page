@@ -51,7 +51,9 @@
     (fn []
       (let [{:keys [options query-map]} @state]
         [:div
-         [:span "HoneySQL Version: 2.0.0-rc5"]
+         [:span "HoneySQL Version: 2.0.0-rc5 — "
+          [:a {:href "https://github.com/john-shaffer/honeysql-page"}
+           "GitHub"]]
          [:div {:style {:display "flex" :margin-top "10px"}}
           [editor/editor query-map
            {:on-change #(->> % .-state .-doc .toString (swap! state assoc :query-map))}]
