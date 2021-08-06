@@ -61,7 +61,7 @@
                       extensions
                       (j/push! extensions))}))
 
-(defn editor [source {:keys [eval? on-change]}]
+(defn editor [source {:keys [on-change]}]
   (r/with-let [update-listener (fn [^ViewUpdate view-update]
                                  (when (and (.-docChanged view-update) on-change)
                                    (on-change view-update)))
