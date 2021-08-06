@@ -51,7 +51,10 @@
     (fn []
       (let [{:keys [options query-map]} @state]
         [:div
-         [:span "HoneySQL Version: 2.0.0-rc5 — "
+         [:span
+          [:a {:href "https://github.com/seancorfield/honeysql"}
+           "HoneySQL"]
+          " version 2.0.0-rc5 — "
           [:a {:href "https://github.com/john-shaffer/honeysql-page"}
            "GitHub"]
           " — "
