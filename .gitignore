@@ -1,5 +1,6 @@
 public/honeysql-page/js
 .cpcache
+.direnv
 .nrepl-port
 .shadow-cljs
 node_modules
