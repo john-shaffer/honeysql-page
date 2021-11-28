@@ -66,7 +66,7 @@
          [:span
           [:a {:href "https://github.com/seancorfield/honeysql"}
            "HoneySQL"]
-          " version 2.1.818 — "
+          " version 2.1.829 — "
           [:a {:href "https://github.com/john-shaffer/honeysql-page"}
            "GitHub"]
           " — "
