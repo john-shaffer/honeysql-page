@@ -5,7 +5,8 @@
             [honey.sql :as sql]
             ["react-highlight" :default Highlight]
             [reagent.core :as r]
-            [reagent.dom :as rdom]))
+            [reagent.dom :as rdom])
+  (:require-macros [rs.shaffe.john.honeysql-page.macros :as macros]))
 
 (def default-options
   "{:params {:param1 \"gabba\", :param2 2}, :pretty true}")
@@ -66,7 +67,7 @@
          [:span
           [:a {:href "https://github.com/seancorfield/honeysql"}
            "HoneySQL"]
-          " version 2.1.833 — "
+          " version " (macros/honeysql-version) " — "
           [:a {:href "https://github.com/john-shaffer/honeysql-page"}
            "GitHub"]
           " — "

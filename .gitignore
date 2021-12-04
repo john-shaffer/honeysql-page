@@ -1,4 +1,5 @@
-public/honeysql-page/js
+public/js
+public/v*/
 .cpcache
 .direnv
 .nrepl-port

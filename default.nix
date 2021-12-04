@@ -8,6 +8,7 @@ let
 in with pkgs;
 mkShell {
   buildInputs = [
+    babashka
     clojure
     glibcLocales # rlwrap (used by clj) uses this
     nodejs
