@@ -9,7 +9,9 @@
   (:require-macros [rs.shaffe.john.honeysql-page.macros :as macros]))
 
 (def default-options
-  "{:params {:param1 \"gabba\", :param2 2}, :pretty true}")
+  "{:checking :strict
+ :params {:param1 \"gabba\", :param2 2}
+ :pretty true}")
 
 (def default-query-map
   "{:select-distinct [:f.* :b.baz :c.quux [:b.bla \"bla-bla\"]
