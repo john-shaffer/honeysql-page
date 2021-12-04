@@ -1,4 +1,4 @@
-(ns com.john-shaffer.honeysql-page.editor
+(ns rs.shaffe.john.honeysql-page.editor
   (:require ["@codemirror/closebrackets" :refer [closeBrackets]]
             ["@codemirror/fold" :as fold]
             ["@codemirror/gutter" :refer [lineNumbers]]

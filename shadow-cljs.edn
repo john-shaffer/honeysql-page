@@ -4,5 +4,5 @@
  {:main
   {:target :browser
    :output-dir "public/honeysql-page/js"
-   :modules {:main {:init-fn com.john-shaffer.honeysql-page/init}}
+   :modules {:main {:init-fn rs.shaffe.john.honeysql-page/init}}
    :release {:compiler-options {:optimizations :simple}}}}}
