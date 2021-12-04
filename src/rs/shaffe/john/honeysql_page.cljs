@@ -48,6 +48,23 @@
        (r/create-element Highlight #js{:className "language-clojure"}
          (pr-str (vec more))))]))
 
+(defn version-url [version]
+  (str "/honeysql/"
+    (when (not= (last (macros/honeysql-versions)) version)
+      (str "v" version "/"))))
+
+(defn select-version! [version]
+  (when (not= version (macros/honeysql-version))
+    (set! js/window.location
+      (str (version-url version) js/window.location.search))))
+
+(defn VersionSelector []
+  (let [version (macros/honeysql-version)]
+    (->> (macros/honeysql-versions)
+      reverse
+      (map #(vector :option (when (= % version) {:selected true}) %))
+      (into [:select {:on-change #(select-version! (.-value (.-target %)))}]))))
+
 (defn App []
   (let [params (try ; Don't die on old browsers
                  (js/URLSearchParams. js/window.location.search)
@@ -69,7 +86,7 @@
          [:span
           [:a {:href "https://github.com/seancorfield/honeysql"}
            "HoneySQL"]
-          " version " (macros/honeysql-version) " — "
+          " version " [VersionSelector] " — "
           [:a {:href "https://github.com/john-shaffer/honeysql-page"}
            "GitHub"]
           " — "

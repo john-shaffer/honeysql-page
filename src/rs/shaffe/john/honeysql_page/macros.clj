@@ -7,3 +7,5 @@
     (some #(re-matches #"honeysql-(\d+\.\d+\.\d+\.*)\.jar" (.getName %)))
     second))
 
+(defmacro honeysql-versions []
+  (edn/read-string (slurp "public/versions.edn")))
