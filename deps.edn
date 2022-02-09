@@ -1,6 +1,6 @@
 {:deps {applied-science/js-interop {:mvn/version "0.3.1"}
         org.clojure/java.classpath {:mvn/version "1.0.0"}
-        com.github.seancorfield/honeysql {:mvn/version "2.2.858"}
+        com.github.seancorfield/honeysql {:mvn/version "2.2.861"}
         nextjournal.clojure-mode/nextjournal.clojure-mode
         {:git/url "https://github.com/nextjournal/clojure-mode"
          :sha "a83c87cd2bd2049b70613f360336a096d15c5518"}
