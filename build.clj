@@ -36,6 +36,9 @@
            {:exit exit#})
        (do ~@body))))
 
+(defn npm-deps! [options]
+  (sh! options "npm" "ci"))
+
 (defn compile-version! [options version]
   (sh! options
     "clojure"
@@ -49,13 +52,14 @@
         (sh! options "cp" "public/js/main.js" (str dir-name "/js"))))))
 
 (defn release! [options]
-  (loop [[version & more] (versions)]
-    (println "Building with HoneySQL" version)
-    (return-err [_ (compile-version! options version)]
+  (return-err [_ (npm-deps! options)]
+    (loop [[version & more] (versions)]
+      (println "Building with HoneySQL" version)
+      (return-err [_ (compile-version! options version)]
       (return-err [_ (package-version! options version)]
         (if more
           (recur more)
-          {:exit 0})))))
+          {:exit 0}))))))
 
 (defn usage [options-summary]
   (->> ["Build the HoneySQL web app"
