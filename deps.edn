@@ -1,10 +1,10 @@
-{:deps {applied-science/js-interop {:mvn/version "0.3.1"}
+{:deps {applied-science/js-interop {:mvn/version "0.3.3"}
         org.clojure/java.classpath {:mvn/version "1.0.0"}
-        com.github.seancorfield/honeysql {:mvn/version "2.2.861"}
+        com.github.seancorfield/honeysql {:mvn/version "2.2.868"}
         nextjournal.clojure-mode/nextjournal.clojure-mode
         {:git/url "https://github.com/nextjournal/clojure-mode"
-         :sha "a83c87cd2bd2049b70613f360336a096d15c5518"}
-        reagent/reagent {:mvn/version "1.1.0"}
-        thheller/shadow-cljs {:mvn/version "2.16.6"}}
+         :sha "699a445ebf2767f41fd0b6eeed5a008511702be6"}
+        reagent/reagent {:mvn/version "1.1.1"}
+        thheller/shadow-cljs {:mvn/version "2.17.8"}}
  :aliases {:shadow-cljs
            {:main-opts ["-m" "shadow.cljs.devtools.cli"]}}}
