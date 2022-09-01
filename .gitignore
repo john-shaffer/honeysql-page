@@ -1,5 +1,7 @@
 public/js
 public/v*/
+.calva/
+.clj-kondo/
 .cpcache
 .direnv
 .nrepl-port
