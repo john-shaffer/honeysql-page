@@ -1,0 +1,1 @@
+{:lint-as {build/return-err clojure.core/let}}
