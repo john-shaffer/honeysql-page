@@ -5,6 +5,7 @@ public/v*/
 .cpcache
 .direnv
 .nrepl-port
+.lsp/
 .shadow-cljs
 node_modules
 pom.xml
