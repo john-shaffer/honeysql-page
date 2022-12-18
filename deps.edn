@@ -6,5 +6,11 @@
          :sha "699a445ebf2767f41fd0b6eeed5a008511702be6"}
         reagent/reagent {:mvn/version "1.1.1"}
         thheller/shadow-cljs {:mvn/version "2.17.8"}}
- :aliases {:shadow-cljs
-           {:main-opts ["-m" "shadow.cljs.devtools.cli"]}}}
+ :aliases
+ {:antq
+  {:deps
+   {com.github.liquidz/antq {:mvn/version "2.2.970"}
+    org.slf4j/slf4j-nop {:mvn/version "2.0.6"}}
+   :main-opts ["-m" "antq.core"]}
+  :shadow-cljs
+  {:main-opts ["-m" "shadow.cljs.devtools.cli"]}}}
