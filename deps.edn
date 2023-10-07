@@ -4,13 +4,13 @@
         nextjournal.clojure-mode/nextjournal.clojure-mode
         {:git/url "https://github.com/nextjournal/clojure-mode"
          :sha "699a445ebf2767f41fd0b6eeed5a008511702be6"}
-        reagent/reagent {:mvn/version "1.1.1"}
+        reagent/reagent {:mvn/version "1.2.0"}
         thheller/shadow-cljs {:mvn/version "2.17.8"}}
  :aliases
  {:antq
   {:deps
-   {com.github.liquidz/antq {:mvn/version "2.5.1095"}
-    org.slf4j/slf4j-nop {:mvn/version "2.0.7"}}
+   {com.github.liquidz/antq {:mvn/version "2.7.1133"}
+    org.slf4j/slf4j-nop {:mvn/version "2.0.9"}}
    :main-opts ["-m" "antq.core"]}
   :shadow-cljs
   {:main-opts ["-m" "shadow.cljs.devtools.cli"]}}}
