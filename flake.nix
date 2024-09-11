@@ -12,6 +12,7 @@
       with pkgs; {
         devShells.default = mkShell {
           buildInputs = [
+            awscli2
             babashka
             clojure
             glibcLocales # rlwrap (used by clj) uses this
