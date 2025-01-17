@@ -1,6 +1,5 @@
 (ns rs.shaffe.john.honeysql-page
   (:require [clojure.edn :as edn]
-            [clojure.string :as str]
             [rs.shaffe.john.honeysql-page.editor :as editor]
             [honey.sql :as sql]
             ["react-highlight" :default Highlight]
