@@ -9,4 +9,5 @@ public/js
 public/v*/
 node_modules
 pom.xml
+result
 target
