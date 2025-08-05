@@ -1,0 +1,35 @@
+name: Update
+
+on:
+  schedule:
+    - cron: '15 9 * * *'  # every day at 9:15 am UTC
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Build devShell
+        run: nix build .#devShells.x86_64-linux.default
+
+      - name: Update versions
+        run: nix develop -c bin/update-versions
+
+      - name: Push
+        run: |
+          if ! git diff --quiet deps.edn; then
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config user.name "github-actions[bot]"
+            git add .
+            LATEST=$(cat public/versions.edn | jq -r '.[0]')
+            git commit -m "Update HoneySQL to $LATEST"
+            git push
+          else
+            echo "No changes to deps.edn, skipping commit."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
