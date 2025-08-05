@@ -1,9 +1,8 @@
 name: Update
 
 on:
-  push:
-    branches:
-      - 'master'
+  schedule:
+    - cron: '15 9 * * *'  # every day at 9:15 am UTC
 
 jobs:
   update:
