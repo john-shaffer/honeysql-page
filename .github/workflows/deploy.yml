@@ -1,0 +1,47 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Cache Clojure dependencies
+        uses: actions/cache@v4
+        with:
+          key: clj-${{ github.repository }}-${{ hashFiles('**/deps.edn') }}
+          restore-keys: clj-${{ github.repository }}-
+          path: |
+            ~/.gitlibs
+            ~/.m2/repository
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          key: node-${{ github.repository }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: node-${{ github.repository }}-
+          path: node_modules
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: us-east-1
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          mask-aws-account-id: no
+
+      - name: Build devShell
+        run: nix build .#devShells.x86_64-linux.default
+
+      - name: Build and deploy
+        run: nix develop -c bash deploy.sh

@@ -2,6 +2,7 @@
 !.clj-kondo
 !.editorconfig
 !.envrc
+!.github
 !.gitignore
 
 public/js
