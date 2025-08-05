@@ -14,8 +14,12 @@
           buildInputs = [
             awscli2
             babashka
+            cacert
             clojure
+            curl
             glibcLocales # rlwrap (used by clj) uses this
+            gnused
+            jq
             nodejs
             nodePackages.npm
             rlwrap

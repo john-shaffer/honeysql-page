@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+curl -s https://api.github.com/repos/seancorfield/honeysql/releases | jq '[.[0:10] | .[].tag_name | ltrimstr("v")]' > public/versions.edn
+latest=$(cat public/versions.edn | jq -r '.[0]') && sed -i "s#\(com.github.seancorfield/honeysql {:mvn/version \"\)[^\"]*\(\"\)#\1$latest\2#" deps.edn
+
