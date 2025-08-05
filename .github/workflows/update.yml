@@ -8,6 +8,8 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.push-changes.outputs.updated }}
     steps:
       - uses: actions/checkout@v4
 
@@ -21,6 +23,7 @@ jobs:
         run: nix develop -c bin/update-versions
 
       - name: Push
+        id: push-changes
         run: |
           if ! git diff --quiet deps.edn; then
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -29,8 +32,50 @@ jobs:
             LATEST=$(cat public/versions.edn | jq -r '.[0]')
             git commit -m "Update HoneySQL to $LATEST"
             git push
+            echo "updated=true" >> $GITHUB_OUTPUT
           else
             echo "No changes to deps.edn, skipping commit."
+            echo "updated=false" >> $GITHUB_OUTPUT
           fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    if: needs.update.outputs.updated == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Cache Clojure dependencies
+        uses: actions/cache@v4
+        with:
+          key: clj-${{ github.repository }}-${{ hashFiles('**/deps.edn') }}
+          restore-keys: clj-${{ github.repository }}-
+          path: |
+            ~/.gitlibs
+            ~/.m2/repository
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          key: node-${{ github.repository }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: node-${{ github.repository }}-
+          path: node_modules
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: us-east-1
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          mask-aws-account-id: no
+
+      - name: Build devShell
+        run: nix build .#devShells.x86_64-linux.default
+
+      - name: Build and deploy
+        run: nix develop -c bash deploy.sh
