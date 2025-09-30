@@ -49,7 +49,7 @@
 
 (defn version-url [version]
   (str "/honeysql/"
-    (when (not= (last (macros/honeysql-versions)) version)
+    (when (not= (first (macros/honeysql-versions)) version)
       (str "v" version "/"))))
 
 (defn select-version! [version]
@@ -60,7 +60,6 @@
 (defn VersionSelector []
   (let [version (macros/honeysql-version)]
     (->> (macros/honeysql-versions)
-      reverse
       (map #(vector :option (when (= % version) {:selected true}) %))
       (into [:select {:on-change #(select-version! (.-value (.-target %)))}]))))
 
