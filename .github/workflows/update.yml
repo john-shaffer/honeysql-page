@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       updated: ${{ steps.push-changes.outputs.updated }}
+      commit-sha: ${{ steps.push-changes.outputs.commit-sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,7 +32,9 @@ jobs:
             LATEST=$(cat public/versions.edn | jq -r '.[0]')
             git commit -m "Update HoneySQL to $LATEST"
             git push
+            COMMIT_SHA=$(git rev-parse HEAD)
             echo "updated=true" >> $GITHUB_OUTPUT
+            echo "commit-sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
           else
             echo "No changes to deps.edn, skipping commit."
             echo "updated=false" >> $GITHUB_OUTPUT
@@ -45,6 +48,8 @@ jobs:
     if: needs.update.outputs.updated == 'true'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update.outputs.commit-sha }}
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3
