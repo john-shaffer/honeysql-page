@@ -11,7 +11,7 @@ jobs:
       updated: ${{ steps.push-changes.outputs.updated }}
       commit-sha: ${{ steps.push-changes.outputs.commit-sha }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.update.outputs.updated == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ needs.update.outputs.commit-sha }}
 
@@ -55,7 +55,7 @@ jobs:
         uses: DeterminateSystems/determinate-nix-action@v3
 
       - name: Cache Clojure dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           key: clj-${{ github.repository }}-${{ hashFiles('**/deps.edn') }}
           restore-keys: clj-${{ github.repository }}-
@@ -64,14 +64,14 @@ jobs:
             ~/.m2/repository
 
       - name: Cache node_modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           key: node-${{ github.repository }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: node-${{ github.repository }}-
           path: node_modules
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-region: us-east-1
