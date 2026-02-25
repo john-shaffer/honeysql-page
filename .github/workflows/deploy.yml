@@ -38,7 +38,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-region: us-east-1
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          mask-aws-account-id: no
+          mask-aws-account-id: false
 
       - name: Build devShell
         run: nix build .#devShells.x86_64-linux.default
