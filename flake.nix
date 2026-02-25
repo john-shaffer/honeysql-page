@@ -3,27 +3,50 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    flake-utils.url = "github:numtide/flake-utils";
   };
-
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
-      with import nixpkgs { inherit system; };
-      with pkgs; {
-        devShells.default = mkShell {
-          buildInputs = [
-            awscli2
-            babashka
-            cacert
-            clojure
-            curl
-            glibcLocales # rlwrap (used by clj) uses this
-            gnused
-            jq
-            nodejs
-            nodePackages.npm
-            rlwrap
-          ];
-        };
-      });
+  outputs =
+    {
+      self,
+      nixpkgs,
+      ...
+    }:
+    let
+      supportedSystems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
+      forAllSystems =
+        function:
+        nixpkgs.lib.genAttrs supportedSystems (
+          system:
+          function system (
+            import nixpkgs {
+              inherit system;
+            }
+          )
+        );
+    in
+    {
+      devShells = forAllSystems (
+        system: pkgs: {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              awscli2
+              babashka
+              cacert
+              clojure
+              curl
+              glibcLocales # rlwrap (used by clj) uses this
+              gnused
+              jq
+              nodejs
+              nodePackages.npm
+              rlwrap
+            ];
+          };
+        }
+      );
+    };
 }
