@@ -1,25 +1,12 @@
 (ns rs.shaffe.john.honeysql-page.editor
-  (:require ["@codemirror/closebrackets" :refer [closeBrackets]]
-            ["@codemirror/fold" :as fold]
-            ["@codemirror/gutter" :refer [lineNumbers]]
-            ["@codemirror/highlight" :as highlight]
-            ["@codemirror/history" :refer [history historyKeymap]]
+  (:require ["@codemirror/commands" :refer [history historyKeymap]]
+            ["@codemirror/language" :refer [foldGutter syntaxHighlighting defaultHighlightStyle]]
             ["@codemirror/state" :refer [EditorState]]
             ["@codemirror/view" :as view :refer [EditorView ViewUpdate]]
-            ["lezer" :as lezer]
-            ["lezer-generator" :as lg]
-            ["lezer-tree" :as lz-tree]
             [applied-science.js-interop :as j]
             [nextjournal.clojure-mode :as cm-clj]
-            [nextjournal.clojure-mode.extensions.close-brackets :as close-brackets]
-            [nextjournal.clojure-mode.extensions.formatting :as format]
-            [nextjournal.clojure-mode.extensions.selection-history :as sel-history]
-            [nextjournal.clojure-mode.keymap :as keymap]
             [nextjournal.clojure-mode.live-grammar :as live-grammar]
-            [nextjournal.clojure-mode.node :as n]
-            [nextjournal.clojure-mode.selections :as sel]
-            [reagent.core :as r]
-            [reagent.dom :as rdom]))
+            [reagent.core :as r]))
 
 (def theme
   (.theme EditorView
@@ -41,10 +28,9 @@
 
 (defonce extensions #js[theme
                         (history)
-                        highlight/defaultHighlightStyle
+                        (syntaxHighlighting defaultHighlightStyle)
                         (view/drawSelection)
-                                        ;(lineNumbers)
-                        (fold/foldGutter)
+                        (foldGutter)
                         (.. EditorState -allowMultipleSelections (of true))
                         (if false
                           ;; use live-reloading grammar

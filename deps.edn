@@ -3,7 +3,7 @@
         com.github.seancorfield/honeysql {:mvn/version "2.7.1437"}
         nextjournal.clojure-mode/nextjournal.clojure-mode
         {:git/url "https://github.com/nextjournal/clojure-mode"
-         :sha "699a445ebf2767f41fd0b6eeed5a008511702be6"}
+         :sha "5da76d28b294f6079b9e35321625f5dff3fb39d5"}
         reagent/reagent {:mvn/version "2.0.1"}
         thheller/shadow-cljs {:mvn/version "3.4.12"}}
  :aliases
