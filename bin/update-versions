@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
-curl -s https://api.github.com/repos/seancorfield/honeysql/releases | jq '[.[0:10] | .[].tag_name | ltrimstr("v")]' > public/versions.edn
-latest=$(cat public/versions.edn | jq -r '.[0]') && sed -i "s#\(com.github.seancorfield/honeysql {:mvn/version \"\)[^\"]*\(\"\)#\1$latest\2#" deps.edn
+set -euo pipefail
 
+response=$(curl -sf https://api.github.com/repos/seancorfield/honeysql/releases)
+
+# Validate we got a JSON array before touching any files
+if ! echo "$response" | jq -e 'type == "array"' > /dev/null 2>&1; then
+  echo "Unexpected response from GitHub API:" >&2
+  echo "$response" | head -5 >&2
+  exit 1
+fi
+
+echo "$response" | jq '[.[0:10] | .[].tag_name | ltrimstr("v")]' > public/versions.edn
+
+latest=$(jq -r '.[0]' public/versions.edn)
+
+if [ -z "$latest" ] || [ "$latest" = "null" ]; then
+  echo "Failed to extract latest version from versions.edn" >&2
+  exit 1
+fi
+
+sed -i "s#\(com.github.seancorfield/honeysql {:mvn/version \"\)[^\"]*\(\"\)#\1$latest\2#" deps.edn
