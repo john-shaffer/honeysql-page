@@ -1,5 +1,6 @@
 .*
 !.clj-kondo
+.clj-kondo/imports
 !.editorconfig
 !.envrc
 !.github
